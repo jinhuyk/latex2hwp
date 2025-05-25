@@ -139,7 +139,8 @@ function cvt_advanced_operators(text: string): string {
         .replace(/\\div/g, '÷')
         .replace(/\\circ/g, '∘')
         .replace(/\\ast/g, '∗')
-        .replace(/\\star/g, '⋆');
+        .replace(/\\star/g, '⋆')
+        .replace(/\\prime/g,'prime')
 }
 
 function cvt_set_symbols(text: string): string {
@@ -212,6 +213,59 @@ function cvt_function_names(text: string): string {
     .replace(/\\mod/g, 'mod`')
     .replace(/\\gcd/g, 'gcd`');
 }
+
+function cvt_greek_letters(text: string): string {
+  return text
+    .replace(/\\Alpha/g, 'Alpha')
+    .replace(/\\Beta/g, 'Beta')
+    .replace(/\\Gamma/g, 'Gamma')
+    .replace(/\\Delta/g, 'Delta')
+    .replace(/\\Epsilon/g, 'Epsilon')
+    .replace(/\\Zeta/g, 'Zeta')
+    .replace(/\\Eta/g, 'Eta')
+    .replace(/\\Theta/g, 'Theta')
+    .replace(/\\Iota/g, 'Iota')
+    .replace(/\\Kappa/g, 'Kappa')
+    .replace(/\\Lambda/g, 'Lambda')
+    .replace(/\\Mu/g, 'Mu')
+    .replace(/\\Nu/g, 'Nu')
+    .replace(/\\Xi/g, 'Xi')
+    .replace(/\\Omicron/g, 'Omicron')
+    .replace(/\\Pi/g, 'Pi')
+    .replace(/\\Rho/g, 'Rho')
+    .replace(/\\Sigma/g, 'Sigma')
+    .replace(/\\Tau/g, 'Tau')
+    .replace(/\\Upsilon/g, 'Upsilon')
+    .replace(/\\Phi/g, 'Phi')
+    .replace(/\\Chi/g, 'Chi')
+    .replace(/\\Psi/g, 'Psi')
+    .replace(/\\Omega/g, 'Omega')
+    .replace(/\\alpha/g, 'alpha')
+    .replace(/\\beta/g, 'beta')
+    .replace(/\\gamma/g, 'gamma')
+    .replace(/\\delta/g, 'delta')
+    .replace(/\\epsilon/g, 'epsilon')
+    .replace(/\\zeta/g, 'zeta')
+    .replace(/\\eta/g, 'eta')
+    .replace(/\\theta/g, 'theta')
+    .replace(/\\iota/g, 'iota')
+    .replace(/\\kappa/g, 'kappa')
+    .replace(/\\lambda/g, 'lambda')
+    .replace(/\\mu/g, 'mu')
+    .replace(/\\nu/g, 'nu')
+    .replace(/\\xi/g, 'xi')
+    .replace(/\\omicron/g, 'omicron')
+    .replace(/\\pi/g, 'pi')
+    .replace(/\\rho/g, 'rho')
+    .replace(/\\sigma/g, 'sigma')
+    .replace(/\\tau/g, 'tau')
+    .replace(/\\upsilon/g, 'upsilon')
+    .replace(/\\phi/g, 'phi')
+    .replace(/\\chi/g, 'chi')
+    .replace(/\\psi/g, 'psi')
+    .replace(/\\omega/g, 'omega');
+}
+
 function cvt_spacing(text: string): string {
     return text
         .replace(/\\,/g, '`')
@@ -235,6 +289,7 @@ function convertLatexToHwp(text: string): string {
   // 반복적으로 처리할 항목들
   result = applyRepeatedly(result, cvt_frac);
   result = applyRepeatedly(result, cvt_sqrt);
+  result = applyRepeatedly(result, cvt_nth_root);
   result = applyRepeatedly(result, cvt_overline);
 
   // 그 외 일반 변환
@@ -256,6 +311,7 @@ function convertLatexToHwp(text: string): string {
   result = cvt_misc_symbols(result);
   result = cvt_text_style(result);
   result = cvt_function_names(result);
+  result = cvt_greek_letters(result);
   result = cvt_spacing(result);
 
   return result;
@@ -269,11 +325,17 @@ function extract_math_blocks(text: string): string {
     .replace(/\\\[((.|\n)*?)\\\]/g, (_, body) => `#${convertLatexToHwp(body.trim())}#`)
     .replace(/\$([^\$\n]+)\$/g, (_, body) => `\`${convertLatexToHwp(body.trim())}\``);
 }
+function extract_table_blocks(text: string): string {
+    
+    return text.replace(/\\begin\{tabular\}\{[^}]*\}([\s\S]*?)\\end\{tabular\}/g, (_, body) => 
+        `${body.trim()}`)
+    .replace(/\\hline/g,'');
 
+}
 
 export function convertFullLatex(text: string): string {
     
     text =extract_math_blocks(text);
-    
+    //text = extract_table_blocks(text);
     return text;
 }
