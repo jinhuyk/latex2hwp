@@ -57,11 +57,18 @@ function cvt_left_right(text: string): string {
 }
 
 function cvt_cases(text: string): string {
-    return text.replace(/\\(?:left)?\\?\{\\begin\{(?:cases|array)\*?\}\{?(?:ll|l|rl|rr)?\}?([\s\S]*?)\\end\{(?:cases|array)\*?\}\}/g, (_, val) => {
-        const lines = val.trim().split(/\\\\/).map((row: string) => row.trim());
-        const cleaned = lines.map((row: string) => row.split(/\s*&\s*/).map((p: string) => p.trim()).join(' & ')).join(' # ');
-        return `cases{${cleaned}}`;
-    });
+  return text.replace(
+    /\\begin\{(?:cases|array)\*?\}[\s\S]*?\}?\s*([\s\S]*?)\\end\{(?:cases|array)\*?\}/g,
+    (_, val) => {
+      const lines = val.trim().split(/\\\\/).map((row: string) => row.trim());
+      const cleaned = lines
+        .map((row: string) =>
+          row.split(/\s*&\s*/).map((p: string) => p.trim()).join(' & ')
+        )
+        .join(' # ');
+      return `cases{${cleaned}}`;
+    }
+  );
 }
 
 function cvt_matrix(text: string): string {
