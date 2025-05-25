@@ -30,7 +30,9 @@ export default function LatexToHwpConverter() {
       <div>
         이 툴은 Latex 수식을 Hwp format으로 변환해주는 용도입니다.<br/><br/>
         한글 파일에 붙어넣기를 한 후, 백틱 부분만 오려내기 후 수식입력기에 붙여넣기 후 저장하면됩니다.<br/>
-        더 편하게 사용하기 위해서는 스크립트 매크로를 사용하여 자동으로 변환할수 있습니다<br/><br/>
+        더 편하게 사용하기 위해서는 스크립트 매크로를 사용하여 자동으로 변환할수 있습니다<br/>
+        사용방법은 밑에 한글가이드를 이용하면 됩니다.<br/>
+        <br/>
         <strong style={{ color: 'red' }}>!Note:</strong> 해당 변환은 <strong>완벽</strong>하지 않으므로, 참고하여 사용하고, 약간의 변경이 필요할 수 있습니다.
         <br/>
         <div>

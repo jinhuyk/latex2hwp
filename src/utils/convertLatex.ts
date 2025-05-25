@@ -75,11 +75,7 @@ function cvt_matrix(text: string): string {
 function cvt_align(text: string): string {
     return text.replace(/\\begin\{(?:align|align\*|aligned|eqnarray|multline|gather|gathered)\}([\s\S]*?)\\end\{(?:align|align\*|aligned|eqnarray|multline|gather|gathered)\}/g, (_, body) => {
         const lines = body.trim().split(/\\\\/).map((line: string) => line.trim());
-        const converted = lines.map((line: string) => {
-            const parts = line.split(/\s*&\s*/).map((p: string) => p.trim());
-            return parts.join(' = ');
-        });
-        return converted.join(' # ');
+        return lines.join(' # ');
     });
 }
 
@@ -94,7 +90,8 @@ function cvt_logic_symbols(text: string): string {
         .replace(/\\exists/g, 'exists')
         .replace(/\\neg/g, 'neg')
         .replace(/\\land/g, 'and')
-        .replace(/\\lor/g, 'or');
+        .replace(/\\lor/g, 'or')
+        .replace(/\\times/g,'times');
 }
 
 function cvt_relation_symbols(text: string): string {
@@ -263,7 +260,9 @@ function cvt_greek_letters(text: string): string {
     .replace(/\\phi/g, 'phi')
     .replace(/\\chi/g, 'chi')
     .replace(/\\psi/g, 'psi')
-    .replace(/\\omega/g, 'omega');
+    .replace(/\\omega/g, 'omega')
+    .replace(/\ell/g,'ell');
+
 }
 
 function cvt_spacing(text: string): string {
@@ -320,10 +319,10 @@ function convertLatexToHwp(text: string): string {
 function extract_math_blocks(text: string): string {
   return text
     .replace(/\\begin\{(align|eqnarray|gather|multline)\*?\}([\s\S]*?)\\end\{\1\*?\}/g,
-      (_, env, body) => `#${convertLatexToHwp(body.trim())}#`)
-    .replace(/\$\$([\s\S]*?)\$\$/g, (_, body) => `#${convertLatexToHwp(body.trim())}#`)
-    .replace(/\\\[((.|\n)*?)\\\]/g, (_, body) => `#${convertLatexToHwp(body.trim())}#`)
-    .replace(/\$([^\$\n]+)\$/g, (_, body) => `\`${convertLatexToHwp(body.trim())}\``);
+      (_, env, body) => `@mh@${convertLatexToHwp(body.trim())}@mh@`)
+    .replace(/\$\$([\s\S]*?)\$\$/g, (_, body) => `@mh@${convertLatexToHwp(body.trim())}@mh@`)
+    .replace(/\\\[((.|\n)*?)\\\]/g, (_, body) => `@mh@${convertLatexToHwp(body.trim())}@mh@`)
+    .replace(/\$([^\$\n]+)\$/g, (_, body) => `@mh@${convertLatexToHwp(body.trim())}@mh@`);
 }
 function extract_table_blocks(text: string): string {
     
@@ -332,10 +331,12 @@ function extract_table_blocks(text: string): string {
     .replace(/\\hline/g,'');
 
 }
-
+function extract_image_blocks(text: string): string {
+    return text.replace(/!\[\]\((https?:\/\/[^\)\s]+)\)/g, (_, url) => `@img@${url}@img@`);
+}
 export function convertFullLatex(text: string): string {
     
     text =extract_math_blocks(text);
-    //text = extract_table_blocks(text);
+    text = extract_image_blocks(text);
     return text;
 }
