@@ -1,4 +1,4 @@
-# $ \LaTeX $ to HWP format Convertor
+# $\LaTeX$ to HWP format Convertor
 이 도구는 $\LaTeX $ 수식을 Hancom HWP 수식으로 바꾸어주는 기능을 가지고 있습니다.
 
 현재 github-pages를 이용하여 무료로 웹사이트에서 변환을 할 수 있습니다.
