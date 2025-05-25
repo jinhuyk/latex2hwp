@@ -53,7 +53,7 @@ function cvt_text(text: string): string {
 }
 
 function cvt_left_right(text: string): string {
-    return text.replace(/\\left([\(\[\{])([\s\S]*?)\\right([\)\]\}])/g, (_, l, body, r) => `left${l}${body}right${r}`);
+    return text.replace(/\\left([\(\[\{])([\s\S]*?)\\right([\)\]\}])/g, (_, l, body, r) => ` left${l}${body} right${r}`);
 }
 
 function cvt_cases(text: string): string {
