@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { convertFullLatex } from '../utils/convertLatex';
+import {stringify } from '../utils/parse';
 import Latex from './Latex';
 import '../styles/global.css';
 
@@ -10,7 +10,7 @@ export default function LatexToHwpConverter() {
 
   const handleConvert = (value: string) => {
     setInput(value);
-    const converted = convertFullLatex(value);
+    const converted = stringify(value);
     setOutput(converted);
     setCopied(false);
   };
