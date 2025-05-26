@@ -1,3 +1,13 @@
+function cvt_escaped_brackets(text: string): string {
+    return text
+        .replace(/\\\{/g, '{')
+        .replace(/\\\}/g, '}')
+        .replace(/\\\[/g, '[')
+        .replace(/\\\]/g, ']')
+        .replace(/\\\(/g, '(')
+        .replace(/\\\)/g, ')')
+        .replace(/\\\|/g, '|');
+}
 function cvt_frac(text: string): string {
     return text.replace(/\\frac\{(.*?)\}\{(.*?)\}/g, (_, a, b) => `{${a}}over{${b}}`);
 }
@@ -324,6 +334,8 @@ function convertLatexToHwp(text: string): string {
     result = cvt_greek_letters(result);
     result = cvt_spacing(result);
     result = removeLatexTags(result);
+    result = cvt_escaped_brackets(result);
+    result = result.replace(/\\/g, '');
     return result;
 }
 
