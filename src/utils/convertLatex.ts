@@ -371,16 +371,15 @@ function convertMath(text: string):string{
     text = text.replace(/@mh@\s*#\s*/g, '@mh@');
     return text;
 }
-function cvt_english_words_to_rm(text: string): string {
-    // Wraps English words (A-Za-z) and numbers in @rm@...@rm@
-    return text.replace(/\b([A-Za-z0-9]+)\b/g, '@rm@$1@rm@');
+function cvt_capital_letters_to_rm(text: string): string {
+    return text.replace(/\b([A-Z]+)\b/g, '@rm@$1@rm@');
 }
 export function convertFullLatex(text: string): string {
     // First, extract math blocks and convert them
     text = convertMath(text);
     text = extract_image_blocks(text);
-
-    // Now, wrap English words and numbers with @rm@, but only outside of math blocks
+    text = text.replace(/@mh@\s*#\s*/g, '@mh@');
+    // Now, wrap capital letters with @rm@, but only outside of math blocks
     let parts: string[] = [];
     let regex = /@mh@.*?@mh@/g;
     let lastIndex = 0;
@@ -389,7 +388,7 @@ export function convertFullLatex(text: string): string {
     while ((match = regex.exec(text)) !== null) {
         // Push text before math block
         const before = text.slice(lastIndex, match.index);
-        parts.push(cvt_english_words_to_rm(before));
+        parts.push(cvt_capital_letters_to_rm(before));
 
         // Push math block as-is
         parts.push(match[0]);
@@ -399,7 +398,7 @@ export function convertFullLatex(text: string): string {
 
     // Push remaining text
     const after = text.slice(lastIndex);
-    parts.push(cvt_english_words_to_rm(after));
+    parts.push(cvt_capital_letters_to_rm(after));
 
     return parts.join('');
 }
