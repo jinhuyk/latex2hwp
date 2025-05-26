@@ -53,3 +53,62 @@ export function cvtLim(node: any, convertFn: (node: any) => string): string {
   return base;
 }
 
+export function cvtVec(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `vec{${arg}}`;
+  }
+  return `\\${node.name}`;
+}
+export function cvtBar(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `bar{${arg}}`;
+  }
+  return `\\${node.name}`;
+}
+export function cvtHat(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `hat{${arg}}`;
+  }
+  return `\\${node.name}`;
+}
+export function cvtTilde(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `tilde{${arg}}`;
+  }
+  return `\\${node.name}`;
+}
+export function cvtRm(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `rm{${arg}}it `;
+  }
+  return `\\${node.name}`;
+}
+
+export function cvtBf(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `bf{${arg}}it `;
+  }
+  return `\\${node.name}`;
+}
+
+export function cvtIt(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `it{${arg}}`;
+  }
+  return `\\${node.name}`;
+}
+
+export function cvtSf(node: any, convertFn: (node: any) => string): string {
+  if (node.args.length === 1) {
+    const arg = convertFn(node.args[0]);
+    return `sf{${arg}}it`;
+  }
+  return `\\${node.name}`;
+}

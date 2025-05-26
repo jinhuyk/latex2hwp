@@ -1,4 +1,5 @@
-import { cvtFrac, cvtInt,  cvtLim, cvtNthRoot, cvtSum } from "./commands";
+import { cvtBar, cvtBf, cvtFrac, cvtHat, cvtInt,  cvtIt,  cvtLim, cvtNthRoot, cvtRm, cvtSf, cvtSum, cvtTilde, cvtVec } from "./commands";
+import { cvtSymbol, symbolCommands } from "./symbol";
 
 const commandMap: Record<string, (node: any, convertFn: (node: any) => string) => string> = {
   frac: cvtFrac,
@@ -6,8 +7,37 @@ const commandMap: Record<string, (node: any, convertFn: (node: any) => string) =
   sum: cvtSum,
   int: cvtInt,
   lim: cvtLim,
+
+  // vector, bar
+  vec: cvtVec,
+  overrightarrow: cvtVec, // 보통 \vec 대신 \overrightarrow 사용하기도 함
+  bar: cvtBar,
+  overline: cvtBar, 
+  hat: cvtHat,
+  tilde: cvtTilde,
+
+  // 문장꾸밈
+  mathrm: cvtRm,
+  mathbf: cvtBf,
+  mathit: cvtIt,
+  mathsf: cvtSf,
+
+  perp: cvtSymbol,
+  top: cvtSymbol,
+  bot: cvtSymbol,
+  emptyset: cvtSymbol,
+  infty: cvtSymbol,
+  cup: cvtSymbol,
+  cap: cvtSymbol,
+
+
+
   // 추후 다른 명령어 추가 가능
 };
+symbolCommands.forEach(cmd => {
+  commandMap[cmd] = cvtSymbol;
+});
+//Todo : 기호 처리 및 다른 연산 들 처리하기
 export function convertCommand(node: any, convertFn: (node: any) => string): string {
   if (node.name in commandMap) {
     return commandMap[node.name](node, convertFn);
