@@ -61,7 +61,7 @@ function cvt_overline(text: string): string {
 }
 
 function cvt_text(text: string): string {
-    return text.replace(/\\text\s?\{(.*?)\}/g, (_, val) => ` @mh@ ${val}@mh@ ~`);
+    return text.replace(/\\text\s?\{(.*?)\}/g, (_, val) => ` @mh@ ${val}@mh@#`);
 }
 
 function cvt_left_right(text: string): string {
@@ -366,7 +366,8 @@ function normalizeMhTags(text: string): string {
 function convertMath(text: string):string{
     text = extract_math_blocks(text);
     text = normalizeMhTags(text);
-    
+    // Remove # after @mh@ with optional whitespace
+    text = text.replace(/@mh@\s*#\s*/g, '@mh@');
     return text;
 }
 export function convertFullLatex(text: string): string {
