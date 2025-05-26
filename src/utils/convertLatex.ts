@@ -13,11 +13,13 @@ function cvt_frac(text: string): string {
 }
 
 function cvt_superscript(text: string): string {
-    return text.replace(/\^(\{.*?\}|\w)/g, (_, val) => `^${val}`);
+    // Handles ^{...} or ^word or ^char, with optional spacing after
+    return text.replace(/\^(\{[^}]*\}|\w)/g, (_, val) => `^${val} `);
 }
 
 function cvt_subscript(text: string): string {
-    return text.replace(/_(\{.*?\}|\w)/g, (_, val) => `_${val}`);
+    // Handles _{...} or _word or _char, with optional spacing after
+    return text.replace(/_(\{[^}]*\}|\w)/g, (_, val) => `_${val} `);
 }
 
 function cvt_sqrt(text: string): string {
