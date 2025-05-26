@@ -61,7 +61,7 @@ function cvt_overline(text: string): string {
 }
 
 function cvt_text(text: string): string {
-    return text.replace(/\\text\s?\{(.*?)\}/g, (_, val) => `${val}`);
+    return text.replace(/\\text\s?\{(.*?)\}/g, (_, val) => ` @mh@ ${val}@mh@ ~`);
 }
 
 function cvt_left_right(text: string): string {
