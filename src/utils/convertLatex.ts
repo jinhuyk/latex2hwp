@@ -338,6 +338,7 @@ function convertLatexToHwp(text: string): string {
     result = removeLatexTags(result);
     result = cvt_escaped_brackets(result);
     result = result.replace(/\\/g, '');
+    // Remove cvt_capital_letters_to_rm(result); from here
     return result;
 }
 
@@ -370,9 +371,36 @@ function convertMath(text: string):string{
     text = text.replace(/@mh@\s*#\s*/g, '@mh@');
     return text;
 }
+function cvt_english_words_to_rm(text: string): string {
+    // Wraps English words (A-Za-z) and numbers in @rm@...@rm@
+    return text.replace(/\b([A-Za-z0-9]+)\b/g, '@rm@$1@rm@');
+}
 export function convertFullLatex(text: string): string {
+    // First, extract math blocks and convert them
     text = convertMath(text);
     text = extract_image_blocks(text);
-    
-    return text;
+
+    // Now, wrap English words and numbers with @rm@, but only outside of math blocks
+    let parts: string[] = [];
+    let regex = /@mh@.*?@mh@/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(text)) !== null) {
+        // Push text before math block
+        const before = text.slice(lastIndex, match.index);
+        parts.push(cvt_english_words_to_rm(before));
+
+        // Push math block as-is
+        parts.push(match[0]);
+
+        lastIndex = regex.lastIndex;
+    }
+
+    // Push remaining text
+    const after = text.slice(lastIndex);
+    parts.push(cvt_english_words_to_rm(after));
+
+    return parts.join('');
 }
+
