@@ -176,7 +176,7 @@ function cvt_misc_symbols(text: string): string {
         .replace(/\\vdots/g, 'vdots')
         .replace(/\\ddots/g, 'ddots')
         .replace(/\\cdots/g, 'cdots')
-        .replace(/\\cdot/g, 'cdots')
+        .replace(/\\cdot/g, 'cdot')
         .replace(/\\angle/g, '∠')
         .replace(/\\measuredangle/g, '∡')
         .replace(/\\sphericalangle/g, '∢')
