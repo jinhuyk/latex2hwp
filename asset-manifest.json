@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/latex2hwp/static/css/main.eaf360c1.css",
-    "main.js": "/latex2hwp/static/js/main.e87e0ba8.js",
+    "main.js": "/latex2hwp/static/js/main.61b4659c.js",
     "static/js/453.db0daafe.chunk.js": "/latex2hwp/static/js/453.db0daafe.chunk.js",
     "index.html": "/latex2hwp/index.html",
     "main.eaf360c1.css.map": "/latex2hwp/static/css/main.eaf360c1.css.map",
-    "main.e87e0ba8.js.map": "/latex2hwp/static/js/main.e87e0ba8.js.map",
+    "main.61b4659c.js.map": "/latex2hwp/static/js/main.61b4659c.js.map",
     "453.db0daafe.chunk.js.map": "/latex2hwp/static/js/453.db0daafe.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.eaf360c1.css",
-    "static/js/main.e87e0ba8.js"
+    "static/js/main.61b4659c.js"
   ]
 }
