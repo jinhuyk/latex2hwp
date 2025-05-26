@@ -65,7 +65,7 @@ function cvt_text(text: string): string {
 }
 
 function cvt_left_right(text: string): string {
-    return text.replace(/\\left([\(\[\{\|])([\s\S]*?)\\right([\)\]\}\|])/g, (_, l, body, r) => ` left${l}${body} right${r}`);
+    return text.replace(/\\left([\(\[\\{\|])([\s\S]*?)\\right([\)\]\\}\|])/g, (_, l, body, r) => ` left${l}${body} right${r}`);
 }
 
 function cvt_cases(text: string): string {
@@ -308,11 +308,11 @@ function convertLatexToHwp(text: string): string {
     let result = text;
 
     // 반복적으로 처리할 항목들
+    result = applyRepeatedly(result, cvt_left_right);
     result = applyRepeatedly(result, cvt_frac);
     result = applyRepeatedly(result, cvt_sqrt);
     result = applyRepeatedly(result, cvt_nth_root);
     result = applyRepeatedly(result, cvt_overline);
-    result = applyRepeatedly(result, cvt_left_right);
 
     // 그 외 일반 변환
     result = cvt_superscript(result);
@@ -322,7 +322,6 @@ function convertLatexToHwp(text: string): string {
     result = cvt_lim(result);
     result = cvt_vec(result);
     result = cvt_text(result);
-    result = cvt_left_right(result);
     result = cvt_cases(result);
     result = cvt_matrix(result);
     result = cvt_align(result);
