@@ -1,12 +1,5 @@
-textarea{
-    width: 100%;
-}
-pre{
-    white-space: pre-wrap;
-    word-break: break-all;
-    overflow-x: auto;
-    border-color: black;
-    border-width: 1px;
-    border-style: solid;
-    padding: 10px;
+* {
+  margin: 1px;
+  padding: 0;
+  box-sizing: border-box;
 }

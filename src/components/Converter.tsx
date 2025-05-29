@@ -15,7 +15,6 @@ export default function LatexToHwpConverter() {
     setCopied(false);
   };
 
-
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(output);
@@ -24,40 +23,71 @@ export default function LatexToHwpConverter() {
       alert('복사 실패: 클립보드를 사용할 수 없습니다.');
     }
   };
+
+  const copiedMessageStyle: React.CSSProperties = {
+    fontFamily: 'NanumSquare',
+    fontWeight:600,
+    position: 'absolute',
+    top: '1rem',
+    right: '1rem',
+    backgroundColor: '#4caf50',
+    color: 'white',
+    padding: '0.5rem 1rem',
+    borderRadius: '4px',
+    opacity: copied ? 1 : 0,
+    transition: 'opacity 0.3s ease-in-out',
+    pointerEvents: 'none',
+  };
+
   return (
-    <div>
-      <h1><Latex></Latex> to Hwp Converter</h1>
-      <div>
-        이 툴은 Latex 수식을 Hwp format으로 변환해주는 용도입니다.<br/><br/>
-        한글 파일에 붙어넣기를 한 후, 백틱 부분만 오려내기 후 수식입력기에 붙여넣기 후 저장하면됩니다.<br/>
-        더 편하게 사용하기 위해서는 스크립트 매크로를 사용하여 자동으로 변환할수 있습니다<br/>
-        사용방법은 밑에 한글가이드를 이용하면 됩니다.<br/>
-        <br/>
-        <strong style={{ color: 'red' }}>!Note:</strong> 해당 변환은 <strong>완벽</strong>하지 않으므로, 참고하여 사용하고, 약간의 변경이 필요할 수 있습니다.
-        <br/>
-        <div>
-          현재까지 가능한 작업은 다음과 같습니다.
-          <ul>
-            <li><strong>수식 변환 - 2025.05.25 부로 가능</strong></li>
-            <li>링크 이미지 변환 - 진행 중, 스크립트 매크로로 사용 가능</li>
-            <li>표 변환 - 개발 중</li>
-            <li>추후 작성 예정...</li>
-          </ul>
+    <div style={{ position: 'relative' }}>
+      {copied && <div style={copiedMessageStyle}>복사완료</div>}
+      <div style={{ display: 'flex', height: '60vh', width: '100%', boxSizing: 'border-box', minHeight: '30vh' }}>
+        <div style={{ width: '50%', display: 'flex', flexDirection: 'column', boxSizing: 'border-box', minHeight: '30vh' }}>
+          <h2 style={{ margin: 0, marginBottom: '0.5rem' }}>LaTeX</h2>
+          <textarea
+            placeholder="Latex 수식을 입력하세요"
+            value={input}
+            onChange={(e) => handleConvert(e.target.value)}
+            style={{
+              flex: 1,
+              resize: 'none',
+              fontSize: '1rem',
+              fontFamily: 'monospace',
+              padding: '0.75rem',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              height: '100%',
+              boxSizing: 'border-box',
+            }}
+          />
+        </div>
+
+        <div style={{ width: '50%',   display: 'flex', flexDirection: 'column', boxSizing: 'border-box', minHeight: '30vh' }}>
+          <h2 style={{ margin: 0, marginBottom: '0.5rem' }}>Result</h2>
+          <div
+            onClick={handleCopy}
+            style={{ flex: 1, cursor: 'pointer' }}
+          >
+            <pre style={{
+              flex: 1,
+              overflow: 'auto',
+              background: '#f9f9f9',
+              padding: '0.75rem',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              fontFamily: 'monospace',
+              fontSize: '1rem',
+              whiteSpace: 'pre-wrap',
+              height: '100%',
+              boxSizing: 'border-box',
+              margin: 0,
+            }}>
+              {output || ''}
+            </pre>
+          </div>
         </div>
       </div>
-      <textarea
-        placeholder="Paste your Latex Code here"
-        value={input}
-        onChange={(e) => handleConvert(e.target.value)}
-        rows={10}
-      />
-
-      <h2>Convert Result</h2>
-      <button onClick={handleCopy} style={{ marginTop: '0.5rem' }}>
-          {copied ? '✅ Copied' : '📋  Copy?'}
-        </button>
-      <pre>{output || 'auto converting... (noting Pasted..)'}</pre>
     </div>
   );
 }
- 

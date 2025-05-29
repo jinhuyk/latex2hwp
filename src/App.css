@@ -1,8 +1,10 @@
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
+
 .App {
   text-align: left;
   font-family: serif;
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-top: 30px;
 }
 .App-logo {
   height: 40vmin;

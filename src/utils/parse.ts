@@ -1,11 +1,9 @@
 // test.ts
 import { latexParser } from 'latex-utensils';
-import {
-  AstRoot
-} from "latex-utensils/out/types/src/latex/latex_parser_types";
+import { AstRoot} from "latex-utensils/out/types/src/latex/latex_parser_types";
 import { stringifyMath } from './math/math';
 
-// superscript/subscript base-arg 보정 함수
+
 
 function parseLatexToAst(latex: string): AstRoot | string {
     return latexParser.parse(latex, { startRule: "Root" }) as AstRoot;
@@ -14,7 +12,7 @@ function parseLatexToAst(latex: string): AstRoot | string {
 export function stringify(latex: string): string {
 
   const AST = parseLatexToAst(latex);
-  return stringifyMixed(AST)+ '\n\n' + printNode(AST);
+  return stringifyMixed(AST);
 }
 export function stringifyMixed(node: any): string{
   let result = '';
@@ -22,7 +20,7 @@ export function stringifyMixed(node: any): string{
     result += `${node.content}`;
   } 
   else if(node.kind === 'inlineMath') {
-    result += ": "+ node.content.map(stringifyMath).join('')+":";
+    result += ""+ node.content.map(stringifyMath).join('')+"";
   }
   else if(node.kind ==='displayMath' || node.kind ==='env.math.align') {
     result += "\n"+ node.content.map(stringifyMath).join('')+"\n";

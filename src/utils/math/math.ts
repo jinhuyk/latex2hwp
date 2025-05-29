@@ -1,10 +1,13 @@
 
+
 import { convertCommand } from "./command/dispatcher";
-import { alignMap } from "./align/aligns";
+import { alignMap, convertToCasesIfApplicable } from "./align/aligns";
+import { delimiterMap } from "./map/delimiterMap";
 
 export function stringifyMath(node: any): string {
     switch (node.kind) {
         case 'text.string':
+            return node.content+'~';
         case 'math.character':
             return node.content;
 
@@ -15,29 +18,39 @@ export function stringifyMath(node: any): string {
             return '{' + node.content.map(stringifyMath).join(' ') + '}';
         case 'math.math_delimiters':
             return ' left' + node.left + node.content.map(stringifyMath).join(' ') + ' right' + node.right;
+        
         case 'math.matching_delimiters':
-            const leftDelim = node.left === '\\{' ? '{' : node.left;
-            const rightDelim = node.right === '\\}' ? '}' : node.right;
-
+            const converted = convertToCasesIfApplicable(node, stringifyMath);
+            if (converted !== null) return converted;
+            
+            const normalizeDelim = (delim: string | undefined) =>
+                delim && delimiterMap[delim] ? delimiterMap[delim] : delim;
+            const leftDelim = normalizeDelim(node.left);
+            const rightDelim = normalizeDelim(node.right);
             return ' left' + leftDelim + node.content.map(stringifyMath).join(' ') + ' right' + rightDelim;
+
         case 'superscript':
             return '^{' + stringifyMath(node.arg) + '}';
-
         case 'subscript':
             return '_{' + stringifyMath(node.arg) + '}';
+
+
+        
         case 'env.math.aligned':
             if (alignMap[node.name]) {
                 return alignMap[node.name](node.content, stringifyMath);
             }
-            return `\\begin{${node.name}}${node.content.map(stringifyMath).join('')}\\end{${node.name}}`;
+            return `${node.content.map(stringifyMath).join(' ')}`;
+        
         case 'env':
-            return `\\begin{${node.name}}${node.content.map(stringifyMath).join('')}\\end{${node.name}}`;
+            return `${node.content.map(stringifyMath).join(' ')}`;
         case 'alignmentTab':
-            return ' & ';
+            return '&';
         case 'linebreak':
         case 'parbreak':
-            return ' # ';
-
+            return '#';
+        case 'command.text':
+            return '~'+stringifyMath(node.arg)+'~';
         default:
             if (node.content && Array.isArray(node.content)) {
                 return node.content.map(stringifyMath).join(' ');
@@ -45,3 +58,4 @@ export function stringifyMath(node: any): string {
             return '';
     }
 }
+        
