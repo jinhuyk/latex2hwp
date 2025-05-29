@@ -7,7 +7,7 @@ import { delimiterMap } from "./map/delimiterMap";
 export function stringifyMath(node: any): string {
     switch (node.kind) {
         case 'text.string':
-            return node.content+'~';
+            return node.content+'``';
         case 'math.character':
             return node.content;
 
@@ -30,8 +30,10 @@ export function stringifyMath(node: any): string {
             return ' left' + leftDelim + node.content.map(stringifyMath).join(' ') + ' right' + rightDelim;
 
         case 'superscript':
+            if ( !node.arg) return '^';
             return '^{' + stringifyMath(node.arg) + '}';
         case 'subscript':
+            if (!node.arg) return '_';
             return '_{' + stringifyMath(node.arg) + '}';
 
 

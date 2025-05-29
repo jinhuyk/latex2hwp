@@ -10,9 +10,14 @@ function parseLatexToAst(latex: string): AstRoot | string {
 }
 
 export function stringify(latex: string): string {
-
-  const AST = parseLatexToAst(latex);
-  return stringifyMixed(AST);
+  try {
+    const AST = parseLatexToAst(latex);
+    //return ;
+    return stringifyMixed(AST);
+  } catch (e) {
+    console.error("Latex parse error:", e);
+    return '[ERROR]';
+  }
 }
 export function stringifyMixed(node: any): string{
   let result = '';
@@ -28,7 +33,9 @@ export function stringifyMixed(node: any): string{
 
   else if(node.content && Array.isArray(node.content)) {
     for (const child of node.content) {
-      result += stringifyMixed(child)+' ';
+      if (child) {
+        result += stringifyMixed(child) + ' ';
+      }
     }
   }
   else {

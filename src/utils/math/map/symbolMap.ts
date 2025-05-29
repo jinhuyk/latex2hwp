@@ -23,7 +23,6 @@ export const symbolMap: Record<string, string> = {
   // Miscellaneous symbols (corrected)
   measuredangle: 'MSANGLE',
   sphericalangle: 'SANGLE',
-  rangle: 'RTANGLE',
   degree: 'DEG',
   fahrenheit: 'FAHRENHEIT',
   backslash: 'LSLANT',
