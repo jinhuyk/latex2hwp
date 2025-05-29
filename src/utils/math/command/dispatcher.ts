@@ -1,4 +1,4 @@
-import { cvtBar, cvtBf, cvtFrac, cvtHat, cvtInt,  cvtIt,  cvtLim, cvtNthRoot, cvtRm, cvtSf, cvtSum, cvtTilde, cvtVec } from "./commands";
+import { cvtBar, cvtBf, cvtFrac, cvtHat, cvtInt,  cvtIt,  cvtLim, cvtNthRoot, cvtPassthrough, cvtRm, cvtSf, cvtSum, cvtTilde, cvtVec, passthroughCommands } from "./commands";
 import { cvtSymbol, symbolCommands } from "./symbol";
 
 const commandMap: Record<string, (node: any, convertFn: (node: any) => string) => string> = {
@@ -22,27 +22,26 @@ const commandMap: Record<string, (node: any, convertFn: (node: any) => string) =
   mathit: cvtIt,
   mathsf: cvtSf,
 
-  perp: cvtSymbol,
-  top: cvtSymbol,
-  bot: cvtSymbol,
-  emptyset: cvtSymbol,
-  infty: cvtSymbol,
-  cup: cvtSymbol,
-  cap: cvtSymbol,
-
-
-
   // 추후 다른 명령어 추가 가능
 };
 symbolCommands.forEach(cmd => {
   commandMap[cmd] = cvtSymbol;
 });
+//passthrough
+passthroughCommands.forEach(cmd => {
+  if (!(cmd in commandMap)) {
+    commandMap[cmd] = cvtPassthrough;
+  }
+});
+
+
+
 //Todo : 기호 처리 및 다른 연산 들 처리하기
 export function convertCommand(node: any, convertFn: (node: any) => string): string {
   if (node.name in commandMap) {
     return commandMap[node.name](node, convertFn);
   }
   // 처리할 명령어가 없으면 원본 명령어 + 인자 문자열 반환
-  const argsStr = node.args ? node.args.map(convertFn).join('') : '';
+  const argsStr = node.args ? node.args.map(convertFn).join(' ') : ' ';
   return `\\${node.name}${argsStr}`;
 }

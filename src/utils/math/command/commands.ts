@@ -112,3 +112,16 @@ export function cvtSf(node: any, convertFn: (node: any) => string): string {
   }
   return `\\${node.name}`;
 }
+
+export const passthroughCommands = [
+  "sin", "cos", "tan", "cot", "sec", "csc",
+  "arcsin", "arccos", "arctan",
+  "log", "ln", "max", "min", "exp", "det", "mod",
+  "sinh", "cosh", "tanh", "coth", "gcd"
+];
+
+export function cvtPassthrough(node: any, convertFn: (node: any) => string): string {
+  const name = node.name;
+  const argsStr = node.args?.map(convertFn).join('') ?? '';
+  return `${name}${argsStr}`;
+}

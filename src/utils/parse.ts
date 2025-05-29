@@ -1,11 +1,9 @@
 // test.ts
 import { latexParser } from 'latex-utensils';
 import {
-  AstRoot,
-  Environment,
-  Node
+  AstRoot
 } from "latex-utensils/out/types/src/latex/latex_parser_types";
-import { stringifyMath } from './math';
+import { stringifyMath } from './math/math';
 
 // superscript/subscript base-arg 보정 함수
 

@@ -1,5 +1,6 @@
 
 import { convertCommand } from "./command/dispatcher";
+import { alignMap } from "./align/aligns";
 
 export function stringifyMath(node: any): string {
     switch (node.kind) {
@@ -8,33 +9,38 @@ export function stringifyMath(node: any): string {
             return node.content;
 
         case 'command':
-            return convertCommand(node, stringifyMath);
+            return ' ' + convertCommand(node, stringifyMath) + ' ';
 
         case 'arg.group':
-            return '{' + node.content.map(stringifyMath).join('') + '}';
-
+            return '{' + node.content.map(stringifyMath).join(' ') + '}';
+        case 'math.math_delimiters':
+            return ' left' + node.left + node.content.map(stringifyMath).join(' ') + ' right' + node.right;
         case 'math.matching_delimiters':
-        case 'math.matching_delimiters':
-            // 만약 node.left가 '\{' 이면 '{'로 변환
             const leftDelim = node.left === '\\{' ? '{' : node.left;
             const rightDelim = node.right === '\\}' ? '}' : node.right;
 
-            return ' left' + leftDelim + node.content.map(stringifyMath).join('') + ' right' + rightDelim;
+            return ' left' + leftDelim + node.content.map(stringifyMath).join(' ') + ' right' + rightDelim;
         case 'superscript':
             return '^{' + stringifyMath(node.arg) + '}';
 
         case 'subscript':
             return '_{' + stringifyMath(node.arg) + '}';
-
-        case 'environment':
+        case 'env.math.aligned':
+            if (alignMap[node.name]) {
+                return alignMap[node.name](node.content, stringifyMath);
+            }
             return `\\begin{${node.name}}${node.content.map(stringifyMath).join('')}\\end{${node.name}}`;
-
+        case 'env':
+            return `\\begin{${node.name}}${node.content.map(stringifyMath).join('')}\\end{${node.name}}`;
+        case 'alignmentTab':
+            return ' & ';
+        case 'linebreak':
         case 'parbreak':
             return ' # ';
 
         default:
             if (node.content && Array.isArray(node.content)) {
-                return node.content.map(stringifyMath).join('');
+                return node.content.map(stringifyMath).join(' ');
             }
             return '';
     }
