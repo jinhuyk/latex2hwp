@@ -20,10 +20,10 @@ export function stringifyMixed(node: any): string{
     result += `${node.content}`;
   } 
   else if(node.kind === 'inlineMath') {
-    result += ""+ node.content.map(stringifyMath).join('')+"";
+    result += "@mh@"+ node.content.map(stringifyMath).join('')+"@mh@";
   }
   else if(node.kind ==='displayMath' || node.kind ==='env.math.align') {
-    result += "\n"+ node.content.map(stringifyMath).join('')+"\n";
+    result += "\n@mh@"+ node.content.map(stringifyMath).join('')+"@mh@\n";
   }
 
   else if(node.content && Array.isArray(node.content)) {
